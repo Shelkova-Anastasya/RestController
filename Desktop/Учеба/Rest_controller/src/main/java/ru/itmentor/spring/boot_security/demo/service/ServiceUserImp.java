@@ -1,0 +1,63 @@
+package ru.itmentor.spring.boot_security.demo.service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import ru.itmentor.spring.boot_security.demo.DAO.DaoUserImp;
+import ru.itmentor.spring.boot_security.demo.model.Role;
+import ru.itmentor.spring.boot_security.demo.model.User;
+
+import java.util.List;
+import java.util.Set;
+
+@Service
+public class ServiceUserImp implements ServiceUser {
+
+private final DaoUserImp daoUserImp;
+    @Autowired
+    public ServiceUserImp(DaoUserImp daoRoleImp) {
+        this.daoUserImp = daoRoleImp;
+    }
+
+    @Override
+    public void setUserRoles(Long userId, Set<Role> newRoles) {
+        daoUserImp.setUserRoles(userId, newRoles);
+
+    }
+    public void removeRoles(Long userId, Set<Role> rolesToRemove){
+        daoUserImp.removeRoles(userId, rolesToRemove);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        return daoUserImp.loadUserByUsername(email);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        daoUserImp.deleteById(id);
+    }
+
+    public User getInfo(UserDetails currentUserDetails){
+        return daoUserImp.getInfo(currentUserDetails);
+    }
+
+    @Override
+    public List<User> listUsers() {
+        return daoUserImp.listUsers();
+    }
+
+    @Override
+    public void saveUser(User user) {
+        daoUserImp.saveUser(user);
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return daoUserImp.getUser(id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        daoUserImp.updateUser(user);
+    }
+}
