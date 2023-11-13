@@ -2,6 +2,9 @@ package ru.itmentor.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,7 +14,7 @@ import ru.itmentor.spring.boot_security.demo.service.ServiceUser;
 
 import java.util.NoSuchElementException;
 
-@RequestMapping("/login/user")
+@RequestMapping("/user")
 @RestController
 public class UserController {
 
@@ -24,17 +27,16 @@ public class UserController {
 
 
     @GetMapping()
-    public User getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
-    User user =null;
-        if (userDetails != null) {
-         user = serviceUser.getInfo(userDetails);
-
+    public ResponseEntity<User> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+    User user = null;
+    if (userDetails != null) {
+        user = serviceUser.getInfo(userDetails);
         if (user == null) {
-            throw new NoSuchElementException("user not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        return ResponseEntity.ok(user);
     }
-    return user;
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
-
 }
 

@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 @Repository
 public class DaoUserImp implements UserDetailsService {
     private UserDetails currentUserDetails;
-    private final PasswordEncoder passwordEncoder;
+
     private final DaoUser daoUser;
 
     @Autowired
     public DaoUserImp(DaoUser daoUser, PasswordEncoder passwordEncoder) {
         this.daoUser = daoUser;
-        this.passwordEncoder= passwordEncoder;
+
     }
 
     public void setUserRoles(Long user_id, Set<Role> newRoles) {
@@ -93,8 +93,7 @@ public class DaoUserImp implements UserDetailsService {
         }
 
         public void saveUser(User user){
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
+
             daoUser.save(user);
         }
 
